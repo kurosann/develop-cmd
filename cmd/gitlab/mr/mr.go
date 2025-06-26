@@ -38,10 +38,12 @@ func Mr() *cobra.Command {
 				// 若没有提交代码跳过mr
 				// 有提交代码则创建mr
 				if strings.Contains(string(bs), "nothing to commit") {
-					// 检查当前分支和目标分支之间的差异
+					// 检查当前分支和目标分支之间的提交差异
 					diffCtx := context.WithValue(ctx, "dir", repo)
-					_, err := C.CmdOutByte(diffCtx, "git", "diff", "--quiet", args[0]+"..HEAD")
+					_, err := C.CmdOutByte(diffCtx, "git", "log", "--oneline", args[0]+"..HEAD")
 					if err != nil {
+						fmt.Printf(" %s 仓库当前分支与目标分支没有提交差异，跳过MR\n", repo)
+					} else {
 						if err := retry.Do(func() error {
 							args := []string{"mr", "create", "-y", "--target-branch", args[0], "--title", args[1]}
 							if removeSource {
@@ -68,8 +70,6 @@ func Mr() *cobra.Command {
 						}), retry.Attempts(3)); err != nil {
 							fmt.Println(err)
 						}
-					} else {
-						fmt.Printf(" %s 仓库当前分支与目标分支没有差异，跳过MR\n", repo)
 					}
 				} else {
 					fmt.Printf(" %s 仓库有未提交的文件，请先提交\n", repo)

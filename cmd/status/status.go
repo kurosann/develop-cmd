@@ -5,6 +5,7 @@ import (
 	"develop-cmd/pkg/C"
 	"develop-cmd/pkg/env"
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -21,7 +22,13 @@ func Status() *cobra.Command {
 				if err != nil {
 					return err
 				}
-				fmt.Println(repo, string(status))
+				if strings.Contains(string(status), "nothing to commit") {
+					continue
+				}
+				fmt.Println("--------------------------------")
+				fmt.Println(repo)
+				fmt.Println(string(status))
+				fmt.Println("--------------------------------")
 			}
 			return nil
 		},

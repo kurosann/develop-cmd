@@ -75,13 +75,21 @@ func auth(ctx context.Context) {
 	fmt.Println("请输入gitlab hostname:")
 	var hostname string
 	fmt.Scanln(&hostname)
+	fmt.Printf("请输入gitlab apihost(%s):", hostname)
+	var apihost string
+	fmt.Scanln(&apihost)
+	if apihost == "" {
+		apihost = hostname
+	}
 	fmt.Printf("请访问 https://%s/-/user_settings/personal_access_tokens 获取gitlab token\n", hostname)
 	fmt.Println("请输入gitlab token:")
 	var token string
 	fmt.Scanln(&token)
-	bs, err := C.CmdOutByte(ctx, "glab", "auth", "login", "--hostname", hostname, "--token", token)
+	bs, err := C.CmdOutByte(ctx, "glab", "auth", "login", "--hostname", hostname, "--token", token, "--api-host", apihost)
 	if err != nil {
-		fmt.Println("glab认证失败")
+		fmt.Println("glab认证失败: ", err)
+		fmt.Println("请重新输入gitlab hostname 和 apihost")
+		auth(ctx)
 		return
 	}
 	fmt.Println(string(bs))
