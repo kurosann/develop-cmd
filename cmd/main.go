@@ -8,6 +8,7 @@ import (
 	"develop-cmd/cmd/commit"
 	"develop-cmd/cmd/fetch"
 	"develop-cmd/cmd/gitlab"
+	"develop-cmd/cmd/initialize"
 	"develop-cmd/cmd/merge"
 	"develop-cmd/cmd/pull"
 	"develop-cmd/cmd/push"
@@ -46,6 +47,7 @@ func main() {
 	}
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "v", "", false, "verbose output")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "vv", "", false, "debug output")
+	rootCmd.AddCommand(initialize.Initialize())
 	rootCmd.AddCommand(branch.Branch())
 	rootCmd.AddCommand(checkout.Checkout())
 	rootCmd.AddCommand(tidy.Tidy())
