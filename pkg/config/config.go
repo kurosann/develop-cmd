@@ -2,59 +2,33 @@ package config
 
 import (
 	"encoding/json"
-	"io"
-	"os"
-	"path"
 )
 
+var GlobalConfig *Config = &Config{
+	Init:      false,
+	Repo:      []string{},
+	Project:   []string{},
+	Workspace: "",
+}
+
 type Config struct {
-	Repo      []string
-	Project   []string
-	Workspace string
+	Init      bool     `json:"init"`
+	Repo      []string `json:"repo"`
+	Project   []string `json:"project"`
+	Workspace string   `json:"workspace"`
 }
 
-func ConfigPath() string {
-	dir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
-	return path.Join(dir, ".devctl", "config")
-}
-
-func DefaultConfig() []byte {
-	config := Config{}
-	bytes, err := json.Marshal(config)
+func (c *Config) JSON() []byte {
+	bytes, err := json.Marshal(c)
 	if err != nil {
 		panic(err)
 	}
 	return bytes
 }
 
-func LoadConfig() (*Config, error) {
-	file, err := os.Open(ConfigPath())
-	if err != nil {
-		if os.IsNotExist(err) {
-			file, err = os.Create(ConfigPath())
-			if err != nil {
-				return nil, err
-			}
-			file.Write(DefaultConfig())
-			file.Close()
-			return LoadConfig()
-		}
-		return nil, err
+func (c *Config) Load(bytes []byte) error {
+	if err := json.Unmarshal(bytes, c); err != nil {
+		return err
 	}
-
-	bytes, err := io.ReadAll(file)
-	if err != nil {
-		return nil, err
-	}
-
-	var config Config
-	if err = json.Unmarshal(bytes, &config); err != nil {
-		return nil, err
-	}
-
-	return &config, nil
+	return nil
 }
