@@ -9,11 +9,11 @@ import (
 
 // 测试 configDir 和 configFile 函数
 func TestConfigDirAndFile(t *testing.T) {
-	dir := configDir()
+	dir := ConfigDir()
 	if dir == "" {
 		t.Error("configDir 返回空字符串")
 	}
-	file := configFile()
+	file := ConfigFile()
 	if file == "" {
 		t.Error("configFile 返回空字符串")
 	}
@@ -25,8 +25,8 @@ func TestConfigDirAndFile(t *testing.T) {
 // 测试 InitConfig 创建配置文件
 func TestInitConfig(t *testing.T) {
 	// 清理环境
-	dir := configDir()
-	file := configFile()
+	dir := ConfigDir()
+	file := ConfigFile()
 	_ = os.Remove(file)
 	_ = os.RemoveAll(dir)
 
@@ -75,8 +75,8 @@ func TestLoadConfig(t *testing.T) {
 // 测试 LoadConfig 处理空文件
 func TestLoadConfig_EmptyFile(t *testing.T) {
 	// 创建空文件
-	file := configFile()
-	dir := configDir()
+	file := ConfigFile()
+	dir := ConfigDir()
 	_ = os.MkdirAll(dir, 0755)
 	f, err := os.Create(file)
 	if err != nil {
