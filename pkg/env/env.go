@@ -1,6 +1,7 @@
 package env
 
 import (
+	"develop-cmd/pkg/config"
 	"os"
 	"strings"
 )
@@ -37,13 +38,17 @@ func GetRepoAddress() []string {
 }
 
 func GetRepoName() []string {
-	repoAddress := GetRepoAddress()
-	repoName := []string{}
-	for _, address := range repoAddress {
-		// 获取 repo 名称 .git前 /后面的内容
-		parts := strings.Split(address, "/")
-		name := strings.Split(parts[len(parts)-1], ".git")[0]
-		repoName = append(repoName, name)
-	}
-	return repoName
+	return config.ProjectPath()
+
+	// repoAddress := GetRepoAddress()
+	// repoName := []string{}
+	//
+	//	for _, address := range repoAddress {
+	//		// 获取 repo 名称 .git前 /后面的内容
+	//		parts := strings.Split(address, "/")
+	//		name := strings.Split(parts[len(parts)-1], ".git")[0]
+	//		repoName = append(repoName, name)
+	//	}
+	//
+	// return repoName
 }

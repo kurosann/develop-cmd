@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path"
 )
 
 var GlobalConfig *Config = &Config{
@@ -61,4 +62,20 @@ func Workspace() string {
 	}
 
 	return workspace
+}
+
+func ProjectPath() []string {
+	if !GlobalConfig.Init {
+		fmt.Println("未初始化配置，请先执行 init 命令")
+		os.Exit(1)
+	}
+
+	workspace := Workspace()
+
+	paths := []string{}
+	for _, project := range GlobalConfig.Project {
+		paths = append(paths, path.Join(workspace, project))
+	}
+
+	return paths
 }
