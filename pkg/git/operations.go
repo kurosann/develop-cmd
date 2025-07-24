@@ -27,3 +27,9 @@ func Merge(ctx context.Context, branch string) error {
 	_, err := C.CmdOutByte(ctx, "git", "merge", branch)
 	return err
 }
+
+// Clone 执行 git clone 操作
+func Clone(ctx context.Context, repo string) error {
+	_, err := C.CmdOutByte(ctx, "git", "clone", repo)
+	return err
+}

@@ -5,6 +5,7 @@ import (
 	"develop-cmd/cmd/branch"
 	"develop-cmd/cmd/build"
 	"develop-cmd/cmd/checkout"
+	"develop-cmd/cmd/clone"
 	"develop-cmd/cmd/commit"
 	"develop-cmd/cmd/fetch"
 	"develop-cmd/cmd/gitlab"
@@ -48,6 +49,7 @@ func main() {
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "v", "", false, "verbose output")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "vv", "", false, "debug output")
 	rootCmd.AddCommand(initialize.Initialize())
+	rootCmd.AddCommand(clone.Clone())
 	rootCmd.AddCommand(branch.Branch())
 	rootCmd.AddCommand(checkout.Checkout())
 	rootCmd.AddCommand(tidy.Tidy())

@@ -2,13 +2,16 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"os"
 	"path"
 )
 
 func init() {
-	LoadConfig()
+	if err := LoadConfig(); err != nil {
+		fmt.Println("未初始化配置，请先执行 init 命令")
+	}
 }
 
 // ================================  ================================
